@@ -6,6 +6,7 @@
     "type": "git",
     "url": "https://github.com/Megarsh/lite-json-editor.git"
   },
+  "keywords": ["vue", "vue3", "json", "json-editor", "vue-json", "jsoneditor", "vuejson"],
   "type": "module",
   "files": ["dist"],
   "main": "./dist/lite-json-editor.umd.cjs",
