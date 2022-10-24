@@ -1,23 +1,12 @@
 {
   "name": "lite-json-editor",
-  "version": "0.0.1",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Megarsh/lite-json-editor.git"
-  },
+  "private": true,
+  "version": "0.0.0",
   "type": "module",
-  "files": ["dist"],
-  "main": "./dist/lite-json-editor.umd.cjs",
-  "module": "./dist/lite-json-editor.js",
-  "exports": {
-    ".": {
-      "import": "./dist/lite-json-editor.js",
-      "require": "./dist/lite-json-editor.umd.cjs"
-    }
-  },
   "scripts": {
-    "build": "vite build"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "vue": "^3.2.37"

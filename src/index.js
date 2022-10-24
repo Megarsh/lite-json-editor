@@ -1,3 +1,4 @@
-import LiteJsonEditor from './components/LiteJsonEditor.vue'
+import { createApp } from 'vue'
+import App from './App.vue'
 
-export default LiteJsonEditor
+createApp(App).mount('#app')

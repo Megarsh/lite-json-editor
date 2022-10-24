@@ -1,4 +1,4 @@
-# json-lite-editor (Vue 3)
+# lite-json-editor (Vue 3)
 
 A lightweight minimalistic json formatter/editor for Vue 3
 
@@ -19,7 +19,7 @@ npm i lite-json-editor
 </script>
 
 <template>
-    <JsonEditorVue v-model="value" />
+    <LiteJsonEditor v-model="value" />
 </template>
 ```
 
@@ -40,9 +40,9 @@ This component provides a slot if you need to modify the error display behavior
 
 ```vue
 <template>
-    <JsonEditorVue v-model="value">
+    <LiteJsonEditor v-model="value">
         <img src="/example-error-icon.svg" />
-    </JsonEditorVue>
+    </LiteJsonEditor>
 </template>
 ```
 
@@ -67,6 +67,6 @@ If you want to modify any if those values pass a formatting object containing `k
 
 ```vue
 <template>
-    <JsonEditorVue v-model="value" :formatting="{ 'number': 'red' }" />
+    <LiteJsonEditor v-model="value" :formatting="{ 'number': 'red' }" />
 </template>
 ```
