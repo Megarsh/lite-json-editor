@@ -110,12 +110,12 @@
 
     const format_object = (input, offset = 0) => {
         if (input === null)
-            return `<span style="color: ${partFormatting.null}">null</span>`
+            return `<span style="color: ${partFormatting['null']}">null</span>`
 
         let output = ''
 
         output += `<span style="color: ${partFormatting.braces}">{</span>\n`
-        output += Object.keys(input).map((key, index, list) => `${'&nbsp;'.repeat(offset + props.indent)}<span style="color: ${partFormatting.key}"><span style="color: ${partFormatting.key_quotes}">\"</span>${key}<span style="color: ${partFormatting.key_quotes}">\"</span></span><span style="color: ${partFormatting.colon}">:</span><span style="color: ${partFormatting.value}">${format_input(input[key], offset + props.indent)}</span>${index < list.length - 1 ? `<span style="color: ${partFormatting.comma}">,</span>` : ''}\n`).join('')
+        output += Object.keys(input).map((key, index, list) => `${'&nbsp;'.repeat(offset + props.indent)}<span style="color: ${partFormatting.key}"><span style="color: ${partFormatting.key_quotes}">\"</span>${key}<span style="color: ${partFormatting.key_quotes}">\"</span></span><span style="color: ${partFormatting.colon}">:</span><span>${format_input(input[key], offset + props.indent)}</span>${index < list.length - 1 ? `<span style="color: ${partFormatting.comma}">,</span>` : ''}\n`).join('')
         output += '&nbsp;'.repeat(offset)
         output += `<span style="color: ${partFormatting.braces}">}</span>`
 
