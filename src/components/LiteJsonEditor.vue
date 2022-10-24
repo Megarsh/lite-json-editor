@@ -198,9 +198,9 @@
 
 <template>
     <div style="position: relative">
-        <div :style="[ dark ? 'background: #252530; color: #ffffff' : '', 'height: 100%; width: 100%; padding: 4px; border-radius: inherit; font-family: monospace; overflow: auto; outline: none; white-space: pre-wrap']" :contentEditable="!withoutEdit" @keyup="event => proxy = event.target" v-html="proxy" />
+        <div :style="[ dark ? 'background: #252530; color: #ffffff' : '', 'height: 100%; width: 100%; padding: 4px; border-radius: inherit; font-family: monospace; overflow: auto; outline: none; white-space: pre-wrap; box-sizing: border-box']" :contentEditable="!withoutEdit" @keyup="event => proxy = event.target" v-html="proxy" />
         <slot>
-            <div v-if="!withoutError" class="error-popup" style="display: none; position: absolute; bottom: 6px; right: 16px; color: #d23b3b; font-size: 12px; font-weight: 600; user-select: none">Incorrect JSON format</div>
+            <div v-if="!withoutError" class="error-popup" style="display: none; position: absolute; bottom: 6px; right: 24px; color: #d23b3b; font-size: 12px; font-weight: 600; user-select: none">Incorrect JSON format</div>
         </slot>
     </div>
 </template>

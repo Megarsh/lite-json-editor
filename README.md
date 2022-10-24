@@ -1,7 +1,10 @@
-# json-lite-editor (Vue 3)
+# lite-json-editor (Vue 3)
 
-A lightweight minimalistic json formatter/editor for Vue 3
+A lightweight json formatter/editor for Vue 3
 
+[Demo](https://megarsh.github.io/lite-json-editor/)
+
+![The San Juan Mountains are beautiful!](https://megarsh.github.io/lite-json-editor/public/demo.png)
 ## Install
 
 ### Vue 3
