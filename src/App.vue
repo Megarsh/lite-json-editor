@@ -303,7 +303,7 @@
         margin-bottom: 10px;
     }
     .editor {
-        max-width: 800px;
+        width: 800px;
         height: 400px;
         border-radius: 6px;
         border: 1px solid #bcbcbc;
