@@ -7,6 +7,7 @@
     const indent = ref(3)
     const withoutError = ref(true)
     const withoutEdit = ref(true)
+    const dark = ref(false)
 </script>
 
 <template>
@@ -14,6 +15,12 @@
         <div class="left">
             <h2>Lite Json Editor</h2>
 
+            <div class="inputs">
+                <label>
+                    <input type="checkbox" v-model="dark" />
+                    <span>Dark Mode</span>
+                </label>
+            </div>
             <div class="inputs">
                 <label>
                     <input type="checkbox" v-model="withoutError" />
@@ -32,10 +39,8 @@
             </div>
         </div>
         <div>
-            <h3>Default</h3>
-            <LiteJsonEditor class="editor" v-model="defaultEditor" :indent="indent" :withoutError="!withoutError" :withoutEdit="!withoutEdit" />
-            <h3>Dark</h3>
-            <LiteJsonEditor class="editor" v-model="defaultEditor" dark :indent="indent" :withoutError="!withoutError" :withoutEdit="!withoutEdit" />
+            <h3>Editor</h3>
+            <LiteJsonEditor class="editor" v-model="defaultEditor" :dark="dark" :indent="indent" :withoutError="!withoutError" :withoutEdit="!withoutEdit" />
             <h3>Custom Error</h3>
             <LiteJsonEditor class="editor" v-model="defaultEditor" :indent="indent" :withoutError="!withoutError" :withoutEdit="!withoutEdit">
                 <div class="error" style="display: none">
