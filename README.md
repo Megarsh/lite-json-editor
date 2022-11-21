@@ -66,10 +66,10 @@ Default colors are
 - ![#8ccf79](https://via.placeholder.com/15/8ccf79/8ccf79.png) `#8ccf79` - true
 - ![#e69fc2](https://via.placeholder.com/15/e69fc2/e69fc2.png) `#e69fc2` - false
 
-If you want to modify any if those values pass a formatting object containing `key: color` pairs of your desired changes
+If you want to modify any of those values pass a formatting object containing `key: color` pairs of your desired changes
 
 ```vue
 <template>
-    <LiteJsonEditor v-model="value" :formatting="{ 'number': 'red' }" />
+    <LiteJsonEditor v-model="value" :formatting="{ 'number': '#e3e3e3' }" />
 </template>
 ```

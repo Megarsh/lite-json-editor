@@ -17,7 +17,7 @@
     })
     const emits = defineEmits(['update:modelValue'])
 
-    const defaultFormats = {
+    const defaultFormats = computed(() => ({
         'number': '#a9dc76',
         'braces': '#84aecc',
         'brackets': '#d26a6a',
@@ -30,13 +30,9 @@
         'null': '#cccccc',
         'true': props.dark ? '#c2e69f' : '#8ccf79',
         'false': '#e69fc2'
-    }
+    }))
 
-    const partFormatting = props.formatting ? Object.keys(defaultFormats).reduce((p, c) => {
-        p[c] = props.formatting[c] ?? defaultFormats[c]
-
-        return p
-    }, {}) : defaultFormats
+    const part = computed(() => props.formatting ? Object.keys(defaultFormats.value).reduce((p, c) => ({ ...p, [c]: props.formatting[c] ?? defaultFormats.value[c]}), {}) : defaultFormats.value)
 
     // Caret Control
 
@@ -65,9 +61,9 @@
         const range = document.createRange()
         let nodes_to_explore = get_text_nodes(target)
         let occurrence = pointer.occurrence
-        let fount_at = 0, i = 0, node
+        let fount_at = 0, node
 
-        for (i; i < nodes_to_explore.length; i++) {
+        for (let i = 0; i < nodes_to_explore.length; i++) {
             node = nodes_to_explore[i]
 
             fount_at = get_position_of_occurrence(node.textContent, pointer.character, occurrence)
@@ -110,14 +106,16 @@
 
     const format_object = (input, offset = 0) => {
         if (input === null)
-            return `<span style="color: ${partFormatting['null']}">null</span>`
+            return `<span style="color: ${part.value.null}">null</span>`
 
         let output = ''
 
-        output += `<span style="color: ${partFormatting.braces}">{</span>\n`
-        output += Object.keys(input).map((key, index, list) => `${'&nbsp;'.repeat(offset + props.indent)}<span style="color: ${partFormatting.key}"><span style="color: ${partFormatting.key_quotes}">\"</span>${key}<span style="color: ${partFormatting.key_quotes}">\"</span></span><span style="color: ${partFormatting.colon}">:</span><span>${format_input(input[key], offset + props.indent)}</span>${index < list.length - 1 ? `<span style="color: ${partFormatting.comma}">,</span>` : ''}\n`).join('')
+        output += `<span style="color: ${part.value.braces}">{</span>\n`
+
+        Object.keys(input).forEach((key, index, list) => output += `${'&nbsp;'.repeat(offset + props.indent)}<span style="color: ${part.value.key}"><span style="color: ${part.value.key_quotes}">"</span>${key}<span style="color: ${part.value.key_quotes}">"</span></span><span style="color: ${part.value.colon}">:</span>${format_input(input[key], offset + props.indent)}${index < list.length - 1 ? `<span style="color: ${part.value.comma}">,</span>` : ''}\n`)
+
         output += '&nbsp;'.repeat(offset)
-        output += `<span style="color: ${partFormatting.braces}">}</span>`
+        output += `<span style="color: ${part.value.braces}">}</span>`
 
         return output
     }
@@ -125,19 +123,21 @@
     const format_array = (input, offset = 0) => {
         let output = ''
 
-        output += `<span style="color: ${partFormatting.brackets}">[</span>\n`
-        output += input.map((value, index, list) => `${'&nbsp;'.repeat(offset + props.indent)}<span>${format_input(value, offset + props.indent)}</span>${index < list.length - 1 ? `<span style="color: ${partFormatting.comma}">,</span>` : ''}\n`).join('')
+        output += `<span style="color: ${part.value.brackets}">[</span>\n`
+
+        input.forEach((value, index, list) => output += `${'&nbsp;'.repeat(offset + props.indent)}<span>${format_input(value, offset + props.indent)}</span>${index < list.length - 1 ? `<span style="color: ${part.value.comma}">,</span>` : ''}\n`)
+
         output += '&nbsp;'.repeat(offset)
-        output += `<span style="color: ${partFormatting.brackets}">]</span>`
+        output += `<span style="color: ${part.value.brackets}">]</span>`
 
         return output
     }
 
-    const format_string = input => `<span style="color: ${partFormatting.string}"><span style="color: ${partFormatting.string_quotes}">\"</span>${input}<span style="color: ${partFormatting.string_quotes}">\"</span></span>`
+    const format_string = input => `<span style="color: ${part.value.string}"><span style="color: ${part.value.string_quotes}">"</span>${input}<span style="color: ${part.value.string_quotes}">"</span></span>`
 
-    const format_boolean = input => `<span style="color: ${partFormatting[input]}">${input}</span>`
+    const format_boolean = input => `<span style="color: ${part.value[input]}">${input}</span>`
 
-    const format_number = input => `<span style="color: ${partFormatting.number}">${input}</span>`
+    const format_number = input => `<span style="color: ${part.value.number}">${input}</span>`
 
     const format_input = (input, offset = 0) => {
         const type = Array.isArray(input) ? 'array' : typeof input
@@ -156,12 +156,7 @@
     // Value Control
 
     const proxy = computed({
-        get: () => {
-            if (typeof props.modelValue === 'string')
-                return props.modelValue ? format_input(JSON.parse(props.modelValue)) : ''
-
-            return props.modelValue ? format_input(props.modelValue) : ''
-        },
+        get: () => props.modelValue ? format_input(typeof props.modelValue === 'string' ? JSON.parse(props.modelValue) : props.modelValue) : '',
         set: async target => {
             try {
                 const formatted = target.innerText.split(/[\xa0\n]+/).join('')
@@ -177,7 +172,7 @@
                     target.nextElementSibling.style.display = 'none'
 
                 if (check) {
-                    const pointer = current ? get_caret_pointer(target) : null
+                    const pointer = current && get_caret_pointer(target)
 
                     emits('update:modelValue', current)
 
@@ -198,7 +193,7 @@
 
 <template>
     <div style="position: relative">
-        <div :style="[ dark ? 'background: #252530; color: #ffffff' : '', 'height: 100%; width: 100%; padding: 4px; border-radius: inherit; font-family: monospace; overflow: auto; outline: none; white-space: pre-wrap; box-sizing: border-box']" :contentEditable="!withoutEdit" @keyup="event => proxy = event.target" v-html="proxy" />
+        <div :style="[dark && 'background: #252530; color: #ffffff', 'height: 100%; width: 100%; padding: 4px; border-radius: inherit; font-family: monospace; overflow: auto; outline: none; white-space: pre-wrap; box-sizing: border-box']" :contentEditable="!withoutEdit" @keyup="event => proxy = event.target" v-html="proxy" />
         <slot>
             <div v-if="!withoutError" class="error-popup" style="display: none; position: absolute; bottom: 6px; right: 24px; color: #d23b3b; font-size: 12px; font-weight: 600; user-select: none">Incorrect JSON format</div>
         </slot>
